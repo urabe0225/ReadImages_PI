@@ -1,0 +1,54 @@
+# ReadImages CMake config file
+#
+# This file sets the following variables:
+# ReadImages_FOUND - Always TRUE.
+# ReadImages_INCLUDE_DIRS - Directories containing the ReadImages include files.
+# ReadImages_IDL_DIRS - Directories containing the ReadImages IDL files.
+# ReadImages_LIBRARIES - Libraries needed to use ReadImages.
+# ReadImages_DEFINITIONS - Compiler flags for ReadImages.
+# ReadImages_VERSION - The version of ReadImages found.
+# ReadImages_VERSION_MAJOR - The major version of ReadImages found.
+# ReadImages_VERSION_MINOR - The minor version of ReadImages found.
+# ReadImages_VERSION_REVISION - The revision version of ReadImages found.
+# ReadImages_VERSION_CANDIDATE - The candidate version of ReadImages found.
+
+message(STATUS "Found ReadImages-@PROJECT_VERSION@")
+set(ReadImages_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(ReadImages_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(ReadImages_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(ReadImages_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(ReadImages_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(ReadImages_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(ReadImages_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(ReadImages_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(ReadImages_VERSION @PROJECT_VERSION@)
+set(ReadImages_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(ReadImages_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(ReadImages_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(ReadImages_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+
