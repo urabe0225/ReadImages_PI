@@ -27,7 +27,7 @@ static const char* readimages_spec[] =
     "lang_type",         "compile",
     // Configuration variables
     "conf.default.ReadData", "0:camera",
-    "conf.default.viewer", "0:OFF",
+    "conf.default.viewer", "1:ON",
     "conf.default.device_num", "0",
     "conf.default.filename", "image/image???.jpg",
     // Widget
@@ -84,11 +84,40 @@ RTC::ReturnCode_t ReadImages::onInitialize()
   // <rtc-template block="bind_config">
   // Bind variables and configuration variable
   bindParameter("ReadData", m_ReadData, "0:camera");
-  bindParameter("viewer", m_viewer, "0:OFF");
+  bindParameter("viewer", m_viewer, "1:ON");
   bindParameter("device_num", m_device_num, "0");
   bindParameter("filename", m_filename, "image/image???.jpg");
   // </rtc-template>
-  
+
+
+	videoCapture.open(0);
+	videoCapture>>inputFrame;
+        			if (videoCapture.isOpened())
+				videoCapture>>inputFrame;
+			cv::imshow("retina input", inputFrame);
+/*	try{
+		// processing loop with stop condition
+		bool continueProcessing=true; // FIXME : not yet managed during process...
+		while(continueProcessing)
+		{
+			// if using video stream, then, grabbing a new frame, else, input remains the same
+			if (videoCapture.isOpened())
+				videoCapture>>inputFrame;
+			cv::imshow("retina input", inputFrame);
+
+			cv::waitKey(5);
+		}
+	}catch(cv::Exception e)
+	{
+		std::cerr<<"Error using Retina : "<<e.what()<<std::endl;
+	}
+	// Program end message
+	std::cout<<"Retina demo end"<<std::endl;
+*/
+
+//  cv::namedWindow("test", WINDOW_AUTOSIZE);
+//  outputFrame = Mat::ones(320,240,CV_8U);
+//  cv::imshow("test", outputFrame);
   return RTC::RTC_OK;
 }
 
@@ -116,6 +145,7 @@ RTC::ReturnCode_t ReadImages::onShutdown(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t ReadImages::onActivated(RTC::UniqueId ec_id)
 {
+/*
   videoCapture.open(m_device_num);
   videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, 320);
   videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
@@ -124,21 +154,22 @@ RTC::ReturnCode_t ReadImages::onActivated(RTC::UniqueId ec_id)
     cout<<"No Camera Device"<<endl;
     return RTC::RTC_ERROR;
   }
-
-  imageviewer.initialize(m_outputOut.getName(), &outputFrame);
+*/
+//  imageviewer.initialize(m_outputOut.getName(), &outputFrame);
   return RTC::RTC_OK;
 }
 
 
 RTC::ReturnCode_t ReadImages::onDeactivated(RTC::UniqueId ec_id)
 {
+/*
   inputFrame.release();
   outputFrame.release();
 
   count = 0;
   videoCapture.release();
-
-  imageviewer.vswitch(0);
+*/
+//  imageviewer.vswitch(0);
 
   return RTC::RTC_OK;
 }
@@ -146,23 +177,31 @@ RTC::ReturnCode_t ReadImages::onDeactivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t ReadImages::onExecute(RTC::UniqueId ec_id)
 {
+			if (videoCapture.isOpened())
+				videoCapture>>inputFrame;
+			cv::imshow("retina input", inputFrame);
+
+			cv::waitKey(5);
+
+
+
+/*
   if (!videoCapture.isOpened())
      return RTC::RTC_OK;
 
-
   videoCapture>>inputFrame;
-
+*/
   // Image
 //  inputFrame = cv::imread("/home/hi/Dropbox/LinuxWork/workspace/componentX/src/usb-cam-facedetect.png", 1);
 //  if(inputFrame.empty()) return RTC::RTC_ERROR;
 
+//  outputFrame = inputFrame;
+//  outputFrame>>m_output;
 
-  outputFrame>>m_output;
-
-  imageviewer.vswitch();
- 
-  m_outputOut.write();
-
+//  imageviewer.vswitch();
+//  cv::imshow("test",inputFrame);
+//  m_outputOut.write();
+/*
   if (count > 100)
   {
     count = 0;
@@ -179,7 +218,7 @@ RTC::ReturnCode_t ReadImages::onExecute(RTC::UniqueId ec_id)
     tm_pre = tm;
   }
   ++count;
-  return RTC::RTC_OK;
+*/  return RTC::RTC_OK;
 }
 
 /*
