@@ -90,34 +90,15 @@ RTC::ReturnCode_t ReadImages::onInitialize()
   // </rtc-template>
 
 
+
 	videoCapture.open(0);
 	videoCapture>>inputFrame;
-        			if (videoCapture.isOpened())
-				videoCapture>>inputFrame;
-			cv::imshow("retina input", inputFrame);
-/*	try{
-		// processing loop with stop condition
-		bool continueProcessing=true; // FIXME : not yet managed during process...
-		while(continueProcessing)
-		{
-			// if using video stream, then, grabbing a new frame, else, input remains the same
-			if (videoCapture.isOpened())
-				videoCapture>>inputFrame;
-			cv::imshow("retina input", inputFrame);
+  if (videoCapture.isOpened())
+    videoCapture>>inputFrame;
 
-			cv::waitKey(5);
-		}
-	}catch(cv::Exception e)
-	{
-		std::cerr<<"Error using Retina : "<<e.what()<<std::endl;
-	}
-	// Program end message
-	std::cout<<"Retina demo end"<<std::endl;
-*/
+  //inputFrame = cv::imread("/home/hi/Dropbox/LinuxWork/workspace/componentX/src/usb-cam-facedetect.png", 1);
+  cv::imshow("retina input", inputFrame);
 
-//  cv::namedWindow("test", WINDOW_AUTOSIZE);
-//  outputFrame = Mat::ones(320,240,CV_8U);
-//  cv::imshow("test", outputFrame);
   return RTC::RTC_OK;
 }
 
@@ -177,48 +158,26 @@ RTC::ReturnCode_t ReadImages::onDeactivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t ReadImages::onExecute(RTC::UniqueId ec_id)
 {
-			if (videoCapture.isOpened())
-				videoCapture>>inputFrame;
-			cv::imshow("retina input", inputFrame);
 
-			cv::waitKey(5);
-
-
-
-/*
   if (!videoCapture.isOpened())
      return RTC::RTC_OK;
 
   videoCapture>>inputFrame;
-*/
+  cv::imshow("retina input", inputFrame);
+
+  cv::waitKey(5);
+
   // Image
 //  inputFrame = cv::imread("/home/hi/Dropbox/LinuxWork/workspace/componentX/src/usb-cam-facedetect.png", 1);
 //  if(inputFrame.empty()) return RTC::RTC_ERROR;
 
-//  outputFrame = inputFrame;
-//  outputFrame>>m_output;
+  outputFrame = inputFrame;
+  outputFrame>>m_output;
 
 //  imageviewer.vswitch();
 //  cv::imshow("test",inputFrame);
-//  m_outputOut.write();
-/*
-  if (count > 100)
-  {
-    count = 0;
-    coil::TimeValue tm;
-    tm = coil::gettimeofday();
-
-    double sec(tm - tm_pre);
-
-    if (sec > 1.0 && sec < 1000.0)
-    {
-        std::cout << 100/sec << " [FPS]" << std::endl;
-    }
-
-    tm_pre = tm;
-  }
-  ++count;
-*/  return RTC::RTC_OK;
+  m_outputOut.write();
+  return RTC::RTC_OK;
 }
 
 /*

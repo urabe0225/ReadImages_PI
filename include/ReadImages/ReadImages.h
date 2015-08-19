@@ -306,10 +306,6 @@ class ReadImages
   cv::Mat inputFrame;
   cv::Mat outputFrame;
 
-  int count;
-  coil::TimeValue tm_pre;
-
-
   hi::MatViewer imageviewer;
 };
 
