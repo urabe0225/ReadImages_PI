@@ -96,7 +96,7 @@ RTC::ReturnCode_t ReadImages::onInitialize()
   if (videoCapture.isOpened())
     videoCapture>>inputFrame;
 
-  //inputFrame = cv::imread("/home/hi/Dropbox/LinuxWork/workspace/componentX/src/usb-cam-facedetect.png", 1);
+  inputFrame = cv::imread("hi-brain_logo.png", 1);
   cv::imshow("retina input", inputFrame);
 
   return RTC::RTC_OK;
@@ -143,13 +143,11 @@ RTC::ReturnCode_t ReadImages::onActivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t ReadImages::onDeactivated(RTC::UniqueId ec_id)
 {
-/*
+
   inputFrame.release();
   outputFrame.release();
-
-  count = 0;
   videoCapture.release();
-*/
+
 //  imageviewer.vswitch(0);
 
   return RTC::RTC_OK;
