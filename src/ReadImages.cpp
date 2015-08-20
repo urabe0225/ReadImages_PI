@@ -89,16 +89,17 @@ RTC::ReturnCode_t ReadImages::onInitialize()
   bindParameter("filename", m_filename, "image/image???.jpg");
   // </rtc-template>
 
+//  inputFrame = cv::imread("hi-brain_logo2.png", IMREAD_COLOR);
+//  cv::resize(inputFrame, inputFrame, cv::Size(320,240), 0, 0, cv::INTER_LINEAR);
+  inputFrame = cv::Mat::zeros(cv::Size(320,240),16);
 
+//  imageviewer.initialize(m_outputOut.getName(), &inputFrame);
+//  imageviewer.vswitch();
 
-	videoCapture.open(0);
-	videoCapture>>inputFrame;
-  if (videoCapture.isOpened())
-    videoCapture>>inputFrame;
-
-  inputFrame = cv::imread("hi-brain_logo.png", 1);
-  cv::imshow("retina input", inputFrame);
-
+  namedWindow( "Display window", WINDOW_AUTOSIZE );
+  cv::imshow( "Display window", inputFrame);
+  cv::waitKey(25);
+  cout<<"Initialize OK"<<endl;
   return RTC::RTC_OK;
 }
 
@@ -126,7 +127,7 @@ RTC::ReturnCode_t ReadImages::onShutdown(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t ReadImages::onActivated(RTC::UniqueId ec_id)
 {
-/*
+
   videoCapture.open(m_device_num);
   videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, 320);
   videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
@@ -135,7 +136,7 @@ RTC::ReturnCode_t ReadImages::onActivated(RTC::UniqueId ec_id)
     cout<<"No Camera Device"<<endl;
     return RTC::RTC_ERROR;
   }
-*/
+
 //  imageviewer.initialize(m_outputOut.getName(), &outputFrame);
   return RTC::RTC_OK;
 }
@@ -161,19 +162,19 @@ RTC::ReturnCode_t ReadImages::onExecute(RTC::UniqueId ec_id)
      return RTC::RTC_OK;
 
   videoCapture>>inputFrame;
-  cv::imshow("retina input", inputFrame);
 
-  cv::waitKey(5);
+  cv::imshow("Display window", inputFrame);
 
   // Image
 //  inputFrame = cv::imread("/home/hi/Dropbox/LinuxWork/workspace/componentX/src/usb-cam-facedetect.png", 1);
 //  if(inputFrame.empty()) return RTC::RTC_ERROR;
 
-  outputFrame = inputFrame;
-  outputFrame>>m_output;
+  inputFrame>>m_output;
 
-//  imageviewer.vswitch();
-//  cv::imshow("test",inputFrame);
+  imageviewer.vswitch();
+  cv::waitKey(3);
+
+
   m_outputOut.write();
   return RTC::RTC_OK;
 }
@@ -225,7 +226,5 @@ extern "C"
                              RTC::Create<ReadImages>,
                              RTC::Delete<ReadImages>);
   }
-  
-};
-
+};  
 
