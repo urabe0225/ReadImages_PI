@@ -91,6 +91,7 @@ RTC::ReturnCode_t ReadImages::onInitialize()
 
 //  inputFrame = cv::imread("hi-brain_logo2.png", IMREAD_COLOR);
 //  cv::resize(inputFrame, inputFrame, cv::Size(320,240), 0, 0, cv::INTER_LINEAR);
+
   inputFrame = cv::Mat::zeros(cv::Size(320,240),16);
 
 //  imageviewer.initialize(m_outputOut.getName(), &inputFrame);
@@ -100,6 +101,7 @@ RTC::ReturnCode_t ReadImages::onInitialize()
   cv::imshow( "Display window", inputFrame);
   cv::waitKey(25);
   cout<<"Initialize OK"<<endl;
+
   return RTC::RTC_OK;
 }
 

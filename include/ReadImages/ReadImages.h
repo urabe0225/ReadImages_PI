@@ -15,7 +15,6 @@
 #include <rtm/idl/InterfaceDataTypesSkel.h>
 #include <iostream>
 #include "opencv2/opencv.hpp"
-#include "opencv2/bioinspired.hpp"
 
 //#include <deque>
 #include "hi_matviewer.h"
