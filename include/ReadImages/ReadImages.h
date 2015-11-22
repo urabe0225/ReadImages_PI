@@ -305,7 +305,6 @@ class ReadImages
   cv::Mat inputFrame;
   cv::Mat outputFrame;
 
-  hi::MatViewer imageviewer;
 };
 
 
