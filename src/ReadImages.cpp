@@ -151,7 +151,6 @@ RTC::ReturnCode_t ReadImages::onExecute(RTC::UniqueId ec_id)
 
   inputFrame>>m_output;
 
-  imageviewer.vswitch();
   cv::waitKey(3);
 
 
