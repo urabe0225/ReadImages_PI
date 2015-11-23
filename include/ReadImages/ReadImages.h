@@ -244,18 +244,6 @@ class ReadImages
   int m_ReadData;
   /*!
    * 
-   * - Name:  viewer
-   * - DefaultValue: 0:OFF
-   */
-  int m_viewer;
-  /*!
-   * 
-   * - Name:  device_num
-   * - DefaultValue: 0
-   */
-  int m_device_num;
-  /*!
-   * 
    * - Name:  filename
    * - DefaultValue: image/image???.jpg
    */

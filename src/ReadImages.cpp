@@ -27,11 +27,9 @@ static const char* readimages_spec[] =
     "lang_type",         "compile",
     // Configuration variables
     "conf.default.ReadData", "0:camera",
-    "conf.default.device_num", "0",
-    "conf.default.filename", "images/image???.jpg",
+    "conf.default.filename", "image/image???.jpg",
     // Widget
     "conf.__widget__.ReadData", "radio",
-     "conf.__widget__.device_num", "text",
     "conf.__widget__.filename", "text",
     // Constraints
     "conf.__constraints__.ReadData", "(1:picture,0:camera)",
@@ -81,18 +79,18 @@ RTC::ReturnCode_t ReadImages::onInitialize()
   // <rtc-template block="bind_config">
   // Bind variables and configuration variable
   bindParameter("ReadData", m_ReadData, "0:camera");
-  bindParameter("device_num", m_device_num, "0");
-  bindParameter("filename", m_filename, "images/image???.jpg");
+  bindParameter("filename", m_filename, "image/image???.jpg");
   // </rtc-template>
 
-//  inputFrame = cv::imread("hi-brain_logo2.png", IMREAD_COLOR);
-//  cv::resize(inputFrame, inputFrame, cv::Size(320,240), 0, 0, cv::INTER_LINEAR);
-
-  inputFrame = cv::Mat::zeros(cv::Size(320,240),16);
-
-//  imageviewer.initialize(m_outputOut.getName(), &inputFrame);
-//  imageviewer.vswitch();
-
+  videoCapture.open(0);
+  videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+  videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+  if (!videoCapture.isOpened())
+  {
+    cout<<"No Camera Device"<<endl;
+    return RTC::RTC_ERROR;
+  }
+  videoCapture>>inputFrame;
   namedWindow( "Display window", WINDOW_AUTOSIZE );
   cv::imshow( "Display window", inputFrame);
   cv::waitKey(25);
@@ -125,17 +123,7 @@ RTC::ReturnCode_t ReadImages::onShutdown(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t ReadImages::onActivated(RTC::UniqueId ec_id)
 {
-  if (m_ReadData == 0){
-    videoCapture.open(m_device_num);
-    videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-    if (!videoCapture.isOpened())
-    {
-      cout<<"No Camera Device"<<endl;
-      return RTC::RTC_ERROR;
-    }
-  }
-//  imageviewer.initialize(m_outputOut.getName(), &outputFrame);
+
   return RTC::RTC_OK;
 }
 
@@ -147,8 +135,6 @@ RTC::ReturnCode_t ReadImages::onDeactivated(RTC::UniqueId ec_id)
   outputFrame.release();
   videoCapture.release();
 
-//  imageviewer.vswitch(0);
-
   return RTC::RTC_OK;
 }
 
@@ -156,22 +142,16 @@ RTC::ReturnCode_t ReadImages::onDeactivated(RTC::UniqueId ec_id)
 RTC::ReturnCode_t ReadImages::onExecute(RTC::UniqueId ec_id)
 {
 
-  if (m_ReadData == 0){
-    if (!videoCapture.isOpened())
-       return RTC::RTC_OK;
-    videoCapture>>inputFrame;
-  }
-  else{
-    inputFrame = cv::imread(m_filename, 1);
-    if(inputFrame.empty()) return RTC::RTC_ERROR;
-    // Image
-  }
+  if (!videoCapture.isOpened())
+     return RTC::RTC_OK;
 
+  videoCapture>>inputFrame;
 
   cv::imshow("Display window", inputFrame);
+
   inputFrame>>m_output;
 
-//  imageviewer.vswitch();
+  imageviewer.vswitch();
   cv::waitKey(3);
 
 
